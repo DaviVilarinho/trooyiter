@@ -1,3 +1,3 @@
-# Clinic System
+# Retailing
 
-Testing some java knowledge
+Testing spring java knowledge
