@@ -14,12 +14,16 @@ public class Post {
 
   private String body;
 
-  @Id
   private long posterID;
+
+  public Post() {
+    this.body = "";
+    this.posterID = 0;
+  }
 
   public Post(String body, long posterID) {
     this.body = body;
-    this.posterID = userID;
+    this.posterID = posterID;
   }
 
   public long getPostID() {

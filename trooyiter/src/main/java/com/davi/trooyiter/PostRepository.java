@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import com.davi.trooyiter.Post;
 
 // spring sabe o que fazer...
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface PostRepository extends CrudRepository<Post, Integer> {
 
 }
