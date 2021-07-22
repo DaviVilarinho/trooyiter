@@ -28,13 +28,16 @@ public class TrooyiterController {
    * It should not delete if mismatched userID
    * Return Success or Fail
    */
-//@GetMapping("/add")
-//public String addToTrooyiter(
-//  @RequestParam(value="userID", defaultValue=-1) long userID,
-//  @RequestParam(value="Content", defaultValue="") String content
-//) {
-//  return "Added";
-//}
+  @GetMapping("/add")
+  @Transactional
+  public String addToTrooyiter(
+    @RequestParam long userID,
+    @RequestParam String content
+  ) {
+    Post newPost = new Post(content, userID);
+    postRepository.save(newPost);
+    return "Added";
+  }
 
   /**
    * Remove a post from Trooyiter
