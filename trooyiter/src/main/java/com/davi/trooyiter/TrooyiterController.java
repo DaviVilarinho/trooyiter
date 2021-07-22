@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import javax.transaction.Transactional;
 
 @RestController
 public class TrooyiterController {
@@ -35,23 +36,36 @@ public class TrooyiterController {
 //  return "Added";
 //}
 
-///**
-// * Remove a post from Trooyiter
-// * This method runs imediattely and userID and postID must be provided
-// * @param long userID
-// * @param long postID
-// * 
-// * It should not delete if mismatched userID
-// * Return Success or Fail
-// */
-//@GetMapping("/rem")
-//public String remFromTrooyiter(
-//  @RequestParam(value="postID", defaultValue=-1) long postID,
-//  @RequestParam(value="userID", defaultValue=-1) long userID
-//  ) {
-//   
-//  return "Removed";
-//}
+  /**
+   * Remove a post from Trooyiter
+   * This method runs imediattely and userID and postID must be provided
+   * @param long userID
+   * @param long postID
+   * 
+   * It should not delete if mismatched userID from postID
+   * Return Success or Fail
+   */
+  @GetMapping("/rem")
+  @Transactional
+  public @ResponseBody String remFromTrooyiter(
+    @RequestParam long postID,
+    @RequestParam long userID
+    ) {
+    // missing any params, bad request by spring
+
+    // query the postID
+    Iterable<Post> postsMatchedById = postRepository.findBypostID(postID);
+    for (Post post : postsMatchedById) {
+      // if matched, delete
+      if (post.getPostID() == postID && post.getPosterID() == userID) {
+        postRepository.deleteBypostID(postID);
+        return "{\"Status\": 1, \"description\": \"deleted succesfully\"}";
+      }
+      return "{\"Status\": 0, \"description\": \"mismatched user and postID\"}";
+    }
+    
+    return "{\"Status\": 0, \"description\": \"missing posts\"}";
+  }
 
   /**
    * Return all posts

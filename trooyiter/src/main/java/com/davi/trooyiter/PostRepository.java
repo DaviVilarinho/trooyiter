@@ -5,5 +5,6 @@ import com.davi.trooyiter.Post;
 
 // spring sabe o que fazer...
 public interface PostRepository extends CrudRepository<Post, Integer> {
-
+  Iterable<Post> findBypostID(long postID);
+  int deleteBypostID(long postID);
 }
